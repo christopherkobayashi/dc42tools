@@ -56,12 +56,16 @@ int main(int argc, char **argv)
 	printf("%s: size is %li\n", argv[1], inputfile_stat.st_size);
 
 	file_buffer = calloc(1, inputfile_stat.st_size);
-	if (file_buffer != NULL)
-		printf("%s: read %li bytes into buffer\n", argv[1],
-		    fread(file_buffer, 1, inputfile_stat.st_size, inputfile));
-
-	if (inputfile != NULL)
+	if (!file_buffer) {
+		printf("%s: could not allocate buffer\n");
 		fclose(inputfile);
+		return -1;
+	}
+
+	printf("%s: read %li bytes into buffer\n", argv[1],
+	    fread(file_buffer, 1, inputfile_stat.st_size, inputfile));
+
+	fclose(inputfile);
 
 	/* consistency checks */
 	check = (file_buffer[0] << 8) + file_buffer[1];
