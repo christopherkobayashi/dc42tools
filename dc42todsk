@@ -1,0 +1,3 @@
+#! /bin/sh
+
+dd ibs=1 skip=84 if="${1}" of="${1}.dsk"
