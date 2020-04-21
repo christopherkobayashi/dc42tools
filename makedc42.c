@@ -68,12 +68,6 @@ int main(int argc, char **argv)
 	fclose(inputfile);
 
 	/* consistency checks */
-	check = (file_buffer[0] << 8) + file_buffer[1];
-	if (check != 0x4c4b) {
-		printf("%s: boot block failed consistency check (%x)\n", argv[1], check);
-		free(file_buffer);
-		return -1;
-	}
 	check = (file_buffer[0x400] << 8) + file_buffer[0x401];
 	if (check != 0x4244) {
 		printf("%s: VIB failed consistency check (%x)\n", argv[1], check);
@@ -97,6 +91,14 @@ int main(int argc, char **argv)
 		case 819200:
 		  header.encoding = gcr_dsdd;
 		  header.format = 0x22;
+		  break;
+		case 737280:
+		  header.encoding = mfm_dsdd;
+		  header.format = 0x22;
+		  break;
+		case 409600:
+		  header.encoding = gcr_ssdd;
+		  header.format = 0x02;
 		  break;
 		default:
 		  printf("%s: unknown size, not doing format/encoding\n", argv[1]);
