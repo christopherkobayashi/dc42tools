@@ -53,8 +53,6 @@ int main(int argc, char **argv)
 		printf("%s: could not stat\n", argv[1]);
 	}
 
-	printf("%s: size is %li\n", argv[1], inputfile_stat.st_size);
-
 	file_buffer = calloc(1, inputfile_stat.st_size);
 	if (!file_buffer) {
 		printf("%s: could not allocate buffer\n", argv[1]);
@@ -62,7 +60,7 @@ int main(int argc, char **argv)
 		return -1;
 	}
 
-	printf("%s: read %li bytes into buffer\n", argv[1],
+	printf("%s: size %li bytes\n", argv[1],
 	    fread(file_buffer, 1, inputfile_stat.st_size, inputfile));
 
 	fclose(inputfile);
@@ -125,6 +123,8 @@ int main(int argc, char **argv)
 
 	fwrite(&header, sizeof(header), 1, outputfile);
 	fwrite(file_buffer, inputfile_stat.st_size, 1, outputfile);
+
+	printf("%s: ensure \"%s\" type/creator is dImg/dCpy\n", argv[1], outputfilename);
 
 	if (file_buffer != NULL)
 		free(file_buffer);
