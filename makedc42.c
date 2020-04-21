@@ -57,7 +57,7 @@ int main(int argc, char **argv)
 
 	file_buffer = calloc(1, inputfile_stat.st_size);
 	if (!file_buffer) {
-		printf("%s: could not allocate buffer\n");
+		printf("%s: could not allocate buffer\n", argv[1]);
 		fclose(inputfile);
 		return -1;
 	}
